@@ -53,10 +53,37 @@ def cam_show():
 
         contours, _ = cv2.findContours(final_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
+        # # Создаем список для объединенных контуров
+        # merged_contours = []
+        #
+        # # Параметр для определения расстояния, при котором контуры будут объединяться
+        # merge_threshold = 50
+        #
+        # Объединяем контуры
         for contour in contours:
-            (x, y, w, h) = cv2.boundingRect(contour)
-            if cv2.contourArea(contour) > 300:
-                cv2.rectangle(frame, (x,y), (x+w,y+h), (0, 0, 0), 5)
+        #     if len(merged_contours) == 0:
+        #         merged_contours.append(contour)
+        #     else:
+        #         # Проверяем расстояние между текущим контуром и последним объединенным контуром
+        #         last_contour = merged_contours[-1]
+        #         x1, y1, w1, h1 = cv2.boundingRect(last_contour)
+        #         x2, y2, w2, h2 = cv2.boundingRect(contour)
+        #
+        #         # Если расстояние между контурами меньше порога, объединяем
+        #         if abs(x1 + w1 - x2) < merge_threshold:  # Проверка горизонтального расстояния
+        #             merged_contours[-1] = np.vstack((merged_contours[-1], contour))
+        #         else:
+        #             merged_contours.append(contour)
+        #
+        # # Теперь создаем общий контур из всех объединенных контуров
+        # if len(merged_contours) > 0:
+        #     all_contours = np.vstack(merged_contours)
+        #     final_merged_contour = cv2.convexHull(all_contours)
+
+            # Рисуем объединенный контур на изображении
+            if cv2.contourArea(contour) > 300:  # Если площадь контура больше 300
+                (x, y, w, h) = cv2.boundingRect(contour)
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 0), 5)
 
         cv2.imshow('Red Filtered Image', red_filtered_frame)
         cv2.imshow('orig', frame)
@@ -67,3 +94,6 @@ def cam_show():
 
 
 cam_show()
+
+
+
